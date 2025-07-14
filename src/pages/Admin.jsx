@@ -7,7 +7,7 @@ const Admin = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://skillsync-ai-backend-2.onrender.com /api/admin/users", {
+      const res = await fetch("https://skillsync-ai-backend-2.onrender.com/api/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();

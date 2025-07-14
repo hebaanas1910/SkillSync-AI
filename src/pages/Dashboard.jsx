@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { FaUserCircle } from "react-icons/fa";
-import axios from "axios"; // ✅ Added axios import
+import axios from "axios";
 
 const Dashboard = () => {
   const [resume, setResume] = useState(null);
@@ -28,7 +28,7 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        "https://skillsync-ai-backend-2.onrender.com/api/resume/analyze", // 👈 Change to your backend URL
+        "https://skillsync-ai-backend-2.onrender.com/api/upload", 
         formData,
         {
           headers: {
