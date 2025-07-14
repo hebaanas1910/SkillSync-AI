@@ -24,7 +24,7 @@ const Login = () => {
       } else {
         localStorage.setItem("token", data.token);
         alert("✅ Login successful!");
-        navigate("/dashboard");
+        navigate("/dashboard", { replace: true });
       }
     } catch (err) {
       console.error(err);
