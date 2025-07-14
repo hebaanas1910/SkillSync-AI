@@ -12,10 +12,16 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [careerGoal, setCareerGoal] = useState("Software Engineer");
 
-  // ✅ Resume Upload API Call Logic
+  // ✅ Resume Upload API Call
   const handleResumeUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You're not logged in. Please log in first.");
+      return;
+    }
 
     setLoading(true);
     setScore(null);
@@ -28,11 +34,12 @@ const Dashboard = () => {
 
     try {
       const response = await axios.post(
-        "https://skillsync-ai-backend-2.onrender.com/api/upload", 
+        "https://skillsync-ai-backend-2.onrender.com/api/upload",
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -43,7 +50,7 @@ const Dashboard = () => {
       setScore(score);
       setJobs(jobs);
     } catch (error) {
-      console.error("Error uploading resume:", error);
+      console.error("❌ Error uploading resume:", error);
       alert("Something went wrong while analyzing your resume.");
     } finally {
       setLoading(false);
@@ -62,7 +69,7 @@ const Dashboard = () => {
           🚀 SkillSync AI Dashboard
         </h1>
 
-        {/* User Profile Section */}
+        {/* User Info */}
         <div className="flex items-center gap-4 mb-8">
           <FaUserCircle size={40} className="text-purple-400" />
           <div>
@@ -71,7 +78,7 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Career Goal Section */}
+        {/* Career Goal */}
         <div className="mb-8">
           <label className="block text-lg text-purple-200 mb-2 font-medium">
             🚀 Choose Your Career Goal
@@ -127,7 +134,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Skills Extracted from Resume */}
+        {/* Extracted Skills */}
         {keywords.length > 0 && (
           <div className="mt-10">
             <h2 className="text-xl font-bold text-purple-300 mb-2">🧠 Extracted Skills</h2>
@@ -177,6 +184,7 @@ const Dashboard = () => {
           </div>
         )}
 
+        {/* No Matches */}
         {jobs.length === 0 && score !== null && !loading && (
           <p className="text-center text-purple-400 mt-6">
             😔 No job matches found. Try uploading a better resume or adding more skills.
