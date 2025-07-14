@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { FaUserCircle, FaRocket, FaPen } from "react-icons/fa"; // Icons for Profile, Career, Resume Feedback
+import { FaUserCircle } from "react-icons/fa";
+import axios from "axios"; // ✅ Added axios import
 
 const Dashboard = () => {
   const [resume, setResume] = useState(null);
@@ -11,14 +12,42 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [careerGoal, setCareerGoal] = useState("Software Engineer");
 
-  // Handle file upload and processing logic...
+  // ✅ Resume Upload API Call Logic
   const handleResumeUpload = async (e) => {
-    // File handling logic here...
-  };
+    const file = e.target.files[0];
+    if (!file) return;
 
-  // Fetch jobs from the backend...
-  const fetchJobs = async () => {
-    // Fetch jobs from the backend...
+    setLoading(true);
+    setScore(null);
+    setKeywords([]);
+    setPreview("");
+    setJobs([]);
+
+    const formData = new FormData();
+    formData.append("resume", file);
+
+    try {
+      const response = await axios.post(
+        "https://skillsync-ai-backend-2.onrender.com/api/resume/analyze", // 👈 Change to your backend URL
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      const { preview, keywords, score, jobs } = response.data;
+      setPreview(preview);
+      setKeywords(keywords);
+      setScore(score);
+      setJobs(jobs);
+    } catch (error) {
+      console.error("Error uploading resume:", error);
+      alert("Something went wrong while analyzing your resume.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -80,7 +109,13 @@ const Dashboard = () => {
             <h3 className="text-lg font-semibold text-purple-200 mb-2">📊 Resume Score</h3>
             <div className="w-full bg-gray-800 rounded-full h-6 shadow-inner">
               <motion.div
-                className={`h-6 rounded-full text-right pr-3 font-bold flex items-center justify-end text-sm ${score >= 70 ? "bg-green-500" : score >= 40 ? "bg-yellow-400 text-black" : "bg-red-500"}`}
+                className={`h-6 rounded-full text-right pr-3 font-bold flex items-center justify-end text-sm ${
+                  score >= 70
+                    ? "bg-green-500"
+                    : score >= 40
+                    ? "bg-yellow-400 text-black"
+                    : "bg-red-500"
+                }`}
                 style={{ width: `${score}%` }}
                 initial={{ width: 0 }}
                 animate={{ width: `${score}%` }}

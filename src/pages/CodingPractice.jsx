@@ -317,7 +317,7 @@ const CodingPractice = () => {
 
     const user = JSON.parse(localStorage.getItem("user"));
     if (mode === "mock" || mode === "contest") {
-      await axios.post("http://localhost:5000/api/submit-score", {
+      await axios.post(`https://skillsync-ai-backend-2.onrender.com/api/submit-score`,{
         name: user?.name || "User",
         score,
         level: Math.floor(score / 30),

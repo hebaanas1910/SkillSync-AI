@@ -31,7 +31,7 @@ const ResumeUpload = () => {
     const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch("http://localhost:5000/api/upload", {
+      const res = await fetch("https://skillsync-ai-backend-2.onrender.com/api/upload", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

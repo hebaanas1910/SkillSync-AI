@@ -13,8 +13,8 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = isLogin
-      ? "http://localhost:5000/api/auth/login"
-      : "http://localhost:5000/api/auth/register";
+      ? "https://skillsync-ai-backend-2.onrender.com/api/auth/login"
+      : "https://skillsync-ai-backend-2.onrender.com/api/auth/register";
 
     try {
       const res = await fetch(url, {

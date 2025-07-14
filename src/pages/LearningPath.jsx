@@ -37,7 +37,7 @@ const LearningPath = () => {
     setError(""); // Reset error state before making request
 
     try {
-      const res = await axios.post("http://localhost:5000/api/learning-path", {
+      const res = await axios.post("https://skillsync-ai-backend-2.onrender.com/api/learning-path", {
         careerGoal,
       });
       

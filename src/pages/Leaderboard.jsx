@@ -5,7 +5,7 @@ const Leaderboard = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/leaderboard")
+    axios.get("https://skillsync-ai-backend-2.onrender.com/api/leaderboard")
       .then((res) => setData(res.data))
       .catch((err) => console.error("❌ Failed to load leaderboard", err));
   }, []);
