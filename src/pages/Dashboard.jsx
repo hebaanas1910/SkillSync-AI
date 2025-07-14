@@ -4,7 +4,6 @@ import { FaUserCircle } from "react-icons/fa";
 import axios from "axios";
 
 const Dashboard = () => {
-  const [resume, setResume] = useState(null);
   const [keywords, setKeywords] = useState([]);
   const [preview, setPreview] = useState("");
   const [score, setScore] = useState(null);
@@ -12,7 +11,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(false);
   const [careerGoal, setCareerGoal] = useState("Software Engineer");
 
-  // ✅ Resume Upload API Call
+  // ✅ Resume Upload with Token and Safe Fallbacks
   const handleResumeUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -44,7 +43,14 @@ const Dashboard = () => {
         }
       );
 
-      const { preview, keywords, score, jobs } = response.data;
+      // ✅ Safe destructuring with defaults
+      const {
+        preview = "",
+        keywords = [],
+        score = null,
+        jobs = [],
+      } = response.data || {};
+
       setPreview(preview);
       setKeywords(keywords);
       setScore(score);
@@ -135,7 +141,7 @@ const Dashboard = () => {
         )}
 
         {/* Extracted Skills */}
-        {keywords.length > 0 && (
+        {Array.isArray(keywords) && keywords.length > 0 && (
           <div className="mt-10">
             <h2 className="text-xl font-bold text-purple-300 mb-2">🧠 Extracted Skills</h2>
             <div className="flex flex-wrap gap-3">
@@ -164,7 +170,7 @@ const Dashboard = () => {
         )}
 
         {/* Job Recommendations */}
-        {jobs.length > 0 && (
+        {Array.isArray(jobs) && jobs.length > 0 && (
           <div className="mt-10">
             <h2 className="text-xl font-bold text-purple-300 mb-4">💼 Recommended Jobs</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -185,7 +191,7 @@ const Dashboard = () => {
         )}
 
         {/* No Matches */}
-        {jobs.length === 0 && score !== null && !loading && (
+        {Array.isArray(jobs) && jobs.length === 0 && score !== null && !loading && (
           <p className="text-center text-purple-400 mt-6">
             😔 No job matches found. Try uploading a better resume or adding more skills.
           </p>
